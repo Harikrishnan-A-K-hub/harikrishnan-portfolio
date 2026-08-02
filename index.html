@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
   <a class="skip-link" href="#work">Skip to work</a>
 
   <header class="site-header">
@@ -47,11 +48,11 @@
 
   <main id="top">
     <section class="intro wrap" aria-labelledby="intro-statement">
-      <p class="intro__eyebrow">Web designer and developer</p>
-      <h1 class="intro__statement" id="intro-statement">I design and build websites with a clear point of view.</h1>
-      <p class="intro__sub">Each project here is a complete brand world shipped as a fast static site.</p>
+      <p class="intro__eyebrow" data-enter style="--d: 0">Web designer and developer</p>
+      <h1 class="intro__statement" id="intro-statement" data-enter style="--d: 90">I design and build websites with a clear point of view.</h1>
+      <p class="intro__sub" data-enter style="--d: 180">Each project here is a complete brand world shipped as a fast static site.</p>
 
-      <dl class="meta">
+      <dl class="meta" data-enter style="--d: 270">
         <div class="meta__item">
           <dt>Role</dt>
           <dd>Design and front end build</dd>
@@ -72,6 +73,15 @@
         <span class="section__index">01</span>
         <h2 class="section__title" id="work-title">Selected work</h2>
         <p class="section__note">Twelve live projects. Each one is designed and built by hand.</p>
+      </div>
+
+      <div class="wrap">
+        <div class="work-filter" role="tablist" aria-label="Filter work by type">
+          <button class="work-filter__btn is-active" type="button" role="tab" aria-selected="true" data-filter="all">All <span class="work-filter__count">12</span></button>
+          <button class="work-filter__btn" type="button" role="tab" aria-selected="false" data-filter="brand">Brand <span class="work-filter__count">6</span></button>
+          <button class="work-filter__btn" type="button" role="tab" aria-selected="false" data-filter="studio">Studio <span class="work-filter__count">5</span></button>
+          <button class="work-filter__btn" type="button" role="tab" aria-selected="false" data-filter="app">App <span class="work-filter__count">1</span></button>
+        </div>
       </div>
 
       <div class="wrap">

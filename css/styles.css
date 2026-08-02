@@ -737,6 +737,126 @@ html:not(.js) .reveal {
   transform: none;
 }
 
+/* ---------- Scroll progress ---------- */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 200;
+  pointer-events: none;
+  background: transparent;
+}
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(var(--sp, 0));
+  transform-origin: 0 50%;
+  background: var(--accent);
+}
+
+/* ---------- Hero entrance ---------- */
+
+html.js .intro [data-enter] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: calc(var(--d, 0) * 1ms);
+  will-change: opacity, transform;
+}
+html.js .intro.is-ready [data-enter] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Work filter ---------- */
+
+.work-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.9rem, 2.5vw, 1.8rem);
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.work-filter__btn {
+  background: none;
+  border: 0;
+  padding: 0.3rem 0;
+  cursor: pointer;
+  color: var(--ink-3);
+  font: 500 var(--step--1) / 1 var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+  transition: color 0.2s var(--ease);
+}
+.work-filter__btn:hover {
+  color: var(--ink);
+}
+.work-filter__btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15rem;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+.work-filter__btn.is-active {
+  color: var(--ink);
+}
+.work-filter__btn.is-active::after {
+  transform: scaleX(1);
+}
+.work-filter__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.work-filter__count {
+  margin-left: 0.15rem;
+  font-size: 0.66rem;
+  vertical-align: super;
+  color: var(--ink-3);
+}
+
+.work > li.is-hidden {
+  display: none;
+}
+
+/* ---------- Nav active (scroll spy) ---------- */
+
+.nav a.is-active {
+  color: var(--ink);
+}
+.nav a.is-active::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Reveal stagger (approach cards) ---------- */
+
+.cards .card:nth-child(1) {
+  --i: 0;
+}
+.cards .card:nth-child(2) {
+  --i: 1;
+}
+.cards .card:nth-child(3) {
+  --i: 2;
+}
+.cards .card:nth-child(4) {
+  --i: 3;
+}
+html.js .cards .card.reveal {
+  transition-delay: calc(var(--i, 0) * 65ms);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
@@ -836,6 +956,10 @@ html:not(.js) .reveal {
     scroll-behavior: auto !important;
   }
   .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  html.js .intro [data-enter] {
     opacity: 1;
     transform: none;
   }

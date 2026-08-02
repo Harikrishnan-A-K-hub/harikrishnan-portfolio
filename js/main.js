@@ -232,6 +232,101 @@
     }
   })();
 
+  /* ---------- Scroll progress + scroll spy ---------- */
+
+  var progressBar = document.querySelector(".scroll-progress span");
+  function updateProgress() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var p = max > 0 ? doc.scrollTop / max : 0;
+    if (progressBar) progressBar.style.setProperty("--sp", p.toFixed(4));
+  }
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav a"));
+  var spySections = navLinks
+    .map(function (a) {
+      var el = document.getElementById(a.getAttribute("href").slice(1));
+      return el ? { link: a, el: el } : null;
+    })
+    .filter(Boolean);
+  function updateSpy() {
+    var y = window.scrollY + window.innerHeight * 0.3;
+    var current = null;
+    spySections.forEach(function (s) {
+      if (s.el.offsetTop <= y) current = s;
+    });
+    navLinks.forEach(function (a) {
+      a.classList.toggle("is-active", !!current && a === current.link);
+    });
+  }
+
+  function onScrollAll() {
+    updateProgress();
+    updateSpy();
+  }
+  onScrollAll();
+  window.addEventListener("scroll", onScrollAll, { passive: true });
+  window.addEventListener("resize", onScrollAll, { passive: true });
+
+  /* ---------- Hero entrance ---------- */
+
+  var intro = document.querySelector(".intro");
+  if (intro) {
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        intro.classList.add("is-ready");
+      });
+    });
+    // fallback so the hero never stays hidden if rAF is throttled
+    window.setTimeout(function () {
+      intro.classList.add("is-ready");
+    }, 450);
+  }
+
+  /* ---------- Work filter ---------- */
+
+  var filterBtns = Array.prototype.slice.call(
+    document.querySelectorAll(".work-filter__btn")
+  );
+  if (filterBtns.length && items.length) {
+    var CAT = {
+      "https://soen-atelier.vercel.app": "brand",
+      "https://aurochs.vercel.app": "brand",
+      "https://stillroom-xi.vercel.app": "brand",
+      "https://hotel-blank.vercel.app": "studio",
+      "https://long-table-zeta.vercel.app": "studio",
+      "https://kurosaji.vercel.app": "brand",
+      "https://kozo-site.vercel.app": "brand",
+      "https://meridian-residences-six.vercel.app": "brand",
+      "https://studybot-umber.vercel.app": "app",
+      "https://creative-agency-lyart.vercel.app": "studio",
+      "https://web-design-studio-five.vercel.app": "studio",
+      "https://mw-website-omega.vercel.app": "studio"
+    };
+    items.forEach(function (item) {
+      var li = item.closest("li");
+      if (li) li.dataset.cat = CAT[item.getAttribute("href")] || "other";
+    });
+    var applyFilter = function (f) {
+      items.forEach(function (item) {
+        var li = item.closest("li");
+        if (!li) return;
+        li.classList.toggle("is-hidden", !(f === "all" || li.dataset.cat === f));
+      });
+    };
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        filterBtns.forEach(function (b) {
+          b.classList.remove("is-active");
+          b.setAttribute("aria-selected", "false");
+        });
+        btn.classList.add("is-active");
+        btn.setAttribute("aria-selected", "true");
+        applyFilter(btn.getAttribute("data-filter"));
+      });
+    });
+  }
+
   /* ---------- Footer year ---------- */
 
   var yearEl = document.getElementById("year");
