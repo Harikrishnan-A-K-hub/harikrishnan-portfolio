@@ -45,15 +45,16 @@
     applyTheme(prefersDark ? "dark" : "light");
   }
 
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      applyTheme(next);
-      try {
-        localStorage.setItem(STORE_KEY, next);
-      } catch (e) {}
-    });
+  function toggleTheme() {
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+    try {
+      localStorage.setItem(STORE_KEY, next);
+    } catch (e) {}
   }
+  if (toggle) toggle.addEventListener("click", toggleTheme);
+  var dockTheme = document.getElementById("dockTheme");
+  if (dockTheme) dockTheme.addEventListener("click", toggleTheme);
 
   /* ---------- Header stuck state ---------- */
 
@@ -242,21 +243,25 @@
     if (progressBar) progressBar.style.setProperty("--sp", p.toFixed(4));
   }
 
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav a"));
-  var spySections = navLinks
-    .map(function (a) {
-      var el = document.getElementById(a.getAttribute("href").slice(1));
-      return el ? { link: a, el: el } : null;
-    })
-    .filter(Boolean);
+  var spyLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.nav a[href^="#"], .dock__item[href^="#"]')
+  );
+  var spyEls = {};
+  spyLinks.forEach(function (a) {
+    var id = a.getAttribute("href").slice(1);
+    if (id && id !== "top" && !spyEls[id]) {
+      var el = document.getElementById(id);
+      if (el) spyEls[id] = el;
+    }
+  });
   function updateSpy() {
     var y = window.scrollY + window.innerHeight * 0.3;
-    var current = null;
-    spySections.forEach(function (s) {
-      if (s.el.offsetTop <= y) current = s;
+    var currentId = "top";
+    Object.keys(spyEls).forEach(function (id) {
+      if (spyEls[id].offsetTop <= y) currentId = id;
     });
-    navLinks.forEach(function (a) {
-      a.classList.toggle("is-active", !!current && a === current.link);
+    spyLinks.forEach(function (a) {
+      a.classList.toggle("is-active", a.getAttribute("href") === "#" + currentId);
     });
   }
 
@@ -281,6 +286,31 @@
     window.setTimeout(function () {
       intro.classList.add("is-ready");
     }, 450);
+  }
+
+  /* ---------- Dock magnify ---------- */
+
+  var dockList = document.querySelector(".dock__list");
+  if (dockList && finePointer && !reduceMotion) {
+    var dockCells = Array.prototype.slice.call(
+      dockList.querySelectorAll(".dock__cell:not(.dock__cell--sep)")
+    );
+    var MAX_SCALE = 1.5;
+    var RANGE = 92;
+    dockList.addEventListener("mousemove", function (e) {
+      dockCells.forEach(function (cell) {
+        var r = cell.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var dist = Math.abs(e.clientX - cx);
+        var scale = 1 + (MAX_SCALE - 1) * Math.max(0, 1 - dist / RANGE);
+        cell.style.setProperty("--s", scale.toFixed(3));
+      });
+    });
+    dockList.addEventListener("mouseleave", function () {
+      dockCells.forEach(function (cell) {
+        cell.style.setProperty("--s", "1");
+      });
+    });
   }
 
   /* ---------- Work filter ---------- */
