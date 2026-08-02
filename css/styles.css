@@ -951,30 +951,25 @@ html[data-theme="dark"] .rgb-text {
   white-space: nowrap;
 }
 .gh-preview__shot {
-  position: relative;
-  display: block;
-  aspect-ratio: 14 / 9;
-  overflow: hidden;
-  background: radial-gradient(120% 120% at 25% 18%, #2b46d8 0%, #141225 72%);
-}
-.gh-preview__fallback {
-  position: absolute;
-  inset: 0;
   display: grid;
-  place-items: center;
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 3vw, 1.7rem);
-  color: #fff;
-  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
+  gap: 0.9rem;
+  padding: clamp(0.9rem, 2.5vw, 1.6rem);
+  background: var(--paper);
 }
-.gh-preview__shot img {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+.gh-art {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
+  border-radius: 6px;
+}
+.gh-art--dark {
+  display: none;
+}
+html[data-theme="dark"] .gh-art--light {
+  display: none;
+}
+html[data-theme="dark"] .gh-art--dark {
+  display: block;
 }
 .gh-preview__cta {
   position: absolute;
