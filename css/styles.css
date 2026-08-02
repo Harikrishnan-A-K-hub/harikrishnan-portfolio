@@ -525,6 +525,56 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 .about__body p + p {
   color: var(--ink-2);
 }
+.offclock {
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+  border-top: 1px solid var(--line);
+  padding-top: 1.4rem;
+}
+.offclock__title {
+  margin: 0 0 1rem;
+  font: 500 var(--step--1) / 1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.offclock__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.offclock__list li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: var(--ink-2);
+  font-size: var(--step-0);
+}
+.offclock__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.about__foot {
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+  color: var(--ink) !important;
+  font-size: var(--step-0);
+}
+.about__foot a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: color 0.2s var(--ease);
+}
+.about__foot a:hover {
+  color: var(--accent);
+}
 
 /* ---------- Approach cards ---------- */
 
